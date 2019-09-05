@@ -6,7 +6,7 @@ Validates received events and print details for conformance testing.
 
 Can be run without k8s for quick dev testing of code:
 
-```
+```go
 go run knative.dev/eventing/test/test_images/eventdetails
 ```
 
