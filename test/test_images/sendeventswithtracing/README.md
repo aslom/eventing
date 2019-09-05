@@ -11,5 +11,3 @@ go run ./test_images/sendeventswithtracing -event-type dev.knative.test.event -e
 ```
 
 And using [eventdetails](../eventdetails) to receive.
-
-

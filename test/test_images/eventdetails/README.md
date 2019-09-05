@@ -11,4 +11,3 @@ go run knative.dev/eventing/test/test_images/eventdetails
 ```
 
 And use [sendeventswithtracing](../sendeventswithtracing) to get events.
-
