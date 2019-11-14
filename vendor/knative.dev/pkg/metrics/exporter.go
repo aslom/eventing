@@ -15,6 +15,8 @@ package metrics
 
 import (
 	"fmt"
+	"os"
+	"strconv"
 	"sync"
 
 	"go.opencensus.io/stats/view"
@@ -61,15 +63,29 @@ type ExporterOptions struct {
 	ConfigMap map[string]string
 }
 
+func getenvWithDefaultInt(key string, defaultInt int, logger *zap.SugaredLogger) int {
+	value := os.Getenv(key)
+	if len(value) == 0 {
+		return defaultInt
+	}
+	i, err := strconv.Atoi(value)
+	if err != nil {
+		logger.Error("Failed to get a valid int value for environment variable %s, using default %i, error: %v", key, defaultInt, zap.Error(err))
+		return defaultInt
+	}
+	return i
+}
+
 // UpdateExporterFromConfigMap returns a helper func that can be used to update the exporter
 // when a config map is updated.
 func UpdateExporterFromConfigMap(component string, logger *zap.SugaredLogger) func(configMap *corev1.ConfigMap) {
 	domain := Domain()
 	return func(configMap *corev1.ConfigMap) {
 		UpdateExporter(ExporterOptions{
-			Domain:    domain,
-			Component: component,
-			ConfigMap: configMap.Data,
+			Domain:         domain,
+			Component:      component,
+			ConfigMap:      configMap.Data,
+			PrometheusPort: getenvWithDefaultInt("PROMETHEUS_PORT", 9090, logger),
 		}, logger)
 	}
 }

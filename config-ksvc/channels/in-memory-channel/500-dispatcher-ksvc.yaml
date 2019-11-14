@@ -32,6 +32,10 @@ spec:
             value: config-observability
           - name: SYSTEM_NAMESPACE
             value: knative-eventing
+          - name: METRICS_DOMAIN
+            value: knative.dev/inmemorychannel-dispatcher
+          - name: PROMETHEUS_PORT
+            value: "9091"
         volumeMounts:
           - name: config-logging
             mountPath: /etc/config-logging
